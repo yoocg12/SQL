@@ -1,7 +1,7 @@
 --tmp02 table 생성
 create table tmp02
 (
-    a varchar2(100)
+    a varchar2(100), --세미콜론(;)을 입력할 경우 ORA-00907 오류
     b varchar2(100)
 )
 
