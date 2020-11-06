@@ -1,0 +1,69 @@
+--최초 요청에 따라 데이터 출력 시도
+--스칼라 서브쿼리를 이용.
+--ap_checks_all data 가 1~2건 초과하는 경우로 폐기
+--기본 join만 사용. 크게 문제 없음.
+
+SELECT ai.invoice_num
+     , (select pv.vendor_name
+         from PO_VENDORS pv
+        where 1=1
+          and pv.vendor_id = ai.vendor_id
+          and 2=2)
+     , ai.invoice_date
+     , ai.amount_paid
+     , (select ac.check_date
+          from ap_invoice_payments_all aip
+             , ap_checks_all ac
+         where 1=1
+           and ai.invoice_id = aip.invoice_id
+           and ac.CHECK_ID = aip.check_id
+           and rownum = 1
+           and 2=2) as jogi_a_date
+
+     , (select aip.amount
+          from ap_invoice_payments_all aip
+             , ap_checks_all ac
+         where 1=1
+           and ai.invoice_id = aip.invoice_id
+           and ac.CHECK_ID = aip.check_id
+           and rownum = 1
+           and 2=2) as jogi_a
+
+     , (select ac.check_date
+          from ap_invoice_payments_all aip
+             , ap_checks_all ac
+         where 1=1
+           and ai.invoice_id = aip.invoice_id
+           and ac.CHECK_ID = aip.check_id
+           and rownum = 2
+           and 2=2) as jogi_b_date
+
+     , (select aip.amount
+          from ap_invoice_payments_all aip
+             , ap_checks_all ac
+         where 1=1
+           and ai.invoice_id = aip.invoice_id
+           and ac.CHECK_ID = aip.check_id
+           and rownum = 2
+           and 2=2) as jogi_b
+
+     , (select ac.check_date
+          from ap_invoice_payments_all aip
+             , ap_checks_all ac
+         where 1=1
+           and ai.invoice_id = aip.invoice_id
+           and ac.CHECK_ID = aip.check_id
+           and rownum = 3
+           and 2=2) as jogi_c_date
+
+     , (select aip.amount
+          from ap_invoice_payments_all aip
+             , ap_checks_all ac
+         where 1=1
+           and ai.invoice_id = aip.invoice_id
+           and ac.CHECK_ID = aip.check_id
+           and rownum = 3
+           and 2=2) as jogi_c
+
+  FROM AP_INVOICES_all ai
+ where 1 = 1
